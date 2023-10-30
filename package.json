@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "npx cypress run",
+    "test:mobile": "npx cypress run mobile --config viewportWidth=410 viewportHeight=860",
+
+    "cy:open:mobile": "npx cypress open mobile --config viewportWidth=410 viewportHeight=860",
     "open": "npx cypress open"
   },
   "author": "Weber",
