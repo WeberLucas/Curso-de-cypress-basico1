@@ -29,7 +29,7 @@ document.querySelector('button[type="submit"]')
     const phoneCheckbox = document.getElementById('phone-checkbox')
     const fileField = document.querySelector('input[type="file"]')
     const successMessage = document.querySelector('.success')
-    //if (!firstNameField.value || !lastNameField.value || !emailField.value || !textareaField.value) {
+    if (!firstNameField.value || !lastNameField.value || !emailField.value || !textareaField.value) {
       return showAndHideErrorMessage()
     }
     if (isPhoneRequired && !phoneField.value) {
