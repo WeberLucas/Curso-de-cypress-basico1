@@ -213,7 +213,7 @@ it('`preenche a area de texto usando o comando invoke',function(){
   .invoke('val', longText)
   .should('have.value',longText)
 })
-it.only('faz uma requisição http',function(){
+it('faz uma requisição http',function(){
   cy.request('novoapptest.tagplus.com.br/weber_gat/')
     .should(function(response){
       const {status, statusText,body} = response
@@ -221,5 +221,17 @@ it.only('faz uma requisição http',function(){
       expect(statusText).to.equal('OK')
       expect(body).to.include('003dc7a')
     })
+})
+
+it.only('procurando o gato',function(){
+ cy.get('#cat')
+ .invoke('show')
+ .should('be.visible')
+cy.get('#title')
+.invoke('text','weber lucas')
+cy.get('#subtitle')
+.invoke('text','eu 🖤 o clube atletico mineiro')
+
+
 })
 });
