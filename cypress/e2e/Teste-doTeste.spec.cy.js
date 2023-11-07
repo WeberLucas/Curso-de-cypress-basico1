@@ -65,7 +65,7 @@ it('exibe mensagem de erro quando telefone for obrigatório mas não estiver pre
 
 })
 Cypress._.times(3,function(){
-  it.only('preenche e limpa os campos',function(){
+  it('preenche e limpa os campos',function(){
     cy.get('#firstName')
     .type('weber')
     .should('have.value','weber')
@@ -191,5 +191,20 @@ it('acessa a página da política de privacidade removendo o target e então cli
   .click()
   cy.contains('Talking About Testing').should('be.visible')
 })
-
+it.only('exibe e esconde as mensagens de sucesso e erro usando o .invoke', () => {
+  cy.get('.success')
+    .should('not.be.visible')
+    .invoke('show')
+    .should('be.visible')
+    .and('contain', 'Mensagem enviada com sucesso.')
+    .invoke('hide')
+    .should('not.be.visible')
+  cy.get('.error')
+    .should('not.be.visible')
+    .invoke('show')
+    .should('be.visible')
+    .and('contain', 'Valide os campos obrigatórios!')
+    .invoke('hide')
+    .should('not.be.visible')
+})
 });
