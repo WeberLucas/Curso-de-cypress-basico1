@@ -3,6 +3,7 @@
 const { wrap } = require("lodash");
 
 describe('Central de Atendimento ao Cliente TAT',function () {
+  const THREE_SECONDS_IN_MS = 3000;
     beforeEach(function() {
       cy.visit('./src/index.html')
 
@@ -13,21 +14,34 @@ describe('Central de Atendimento ao Cliente TAT',function () {
   });
   it('preenche os campos obrigatórios e vnia o formulário', function() {
     const longText = 'teste,teste,testeteste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,testteste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,testteste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,test,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,teste,'
+    cy.clock()
+
     cy.get('#firstName').type('weber lucas')
     cy.get('#lastName').type('laube luiz')
     cy.get('#email').type('weber13lucas@gmail.com')
     cy.get('#open-text-area').type(longText,{ delay : 0 })
     cy.contains('.button', 'Enviar').click()
+
     cy.get('.success').should('be.visible')
+
+    cy.tick(THREE_SECONDS_IN_MS)
+
+    cy.get('.success').should('not.be.visible')
+
   });
 
   it('exibe mensagem de erro ao submeter o formeulatório com email formatado incorreto', function() {
+    cy.clock()
     cy.get('#firstName').type('weber lucas')
     cy.get('#lastName').type('laube luiz')
     cy.get('#email').type('weber13lucas.com')
     cy.get('#open-text-area').type('teste')
     cy.contains('.button', 'Enviar').click()
     cy.get('.error').should('be.visible')
+    cy.tick(THREE_SECONDS_IN_MS)
+    cy.get('.error').should('not.be.visible')
+
+    
   });
 it('compo telefone continua vazio quando preenchido com valor não númerico', function(){
 
@@ -36,6 +50,7 @@ cy.get('#phone')
 .should('have.value','');
 })
 it('exibe mensagem de erro quando telefone for obrigatório mas não estiver preenchido ', function(){
+  cy.clock()
   cy.get('#firstName').type('neyde regina')
   cy.get('#lastName').type('laube luiz')
   cy.get('#email').type('weber13lucas@gmail.com')
@@ -44,40 +59,54 @@ it('exibe mensagem de erro quando telefone for obrigatório mas não estiver pre
   cy.contains('.button', 'Enviar').click()
 
   cy.get('.error').should('be.visible')
-})
-it('preenche e limpa os campos',function(){
-  cy.get('#firstName')
-  .type('weber')
-  .should('have.value','weber')
-  .clear()
-  .should('have.value','')
-  cy.get('#lastName')
-  .type('lucas')
-  .should('have.value','lucas')
-  .clear()
-  .should('have.value','')
-  cy.get('#email')
-  .type('weber13lucas@gmail.com')
-  .should('have.value','weber13lucas@gmail.com')
-  .clear()
-  .should('have.value','')
-  cy.get('#phone')
-  .type('123467899')
-  .should('have.value','123467899') 
-  .clear()
-  .should('have.value','')
+  cy.tick(THREE_SECONDS_IN_MS)
+  cy.get('.error').should('not.be.visible')
 
+
+})
+Cypress._.times(3,function(){
+  it.only('preenche e limpa os campos',function(){
+    cy.get('#firstName')
+    .type('weber')
+    .should('have.value','weber')
+    .clear()
+    .should('have.value','')
+    cy.get('#lastName')
+    .type('lucas')
+    .should('have.value','lucas')
+    .clear()
+    .should('have.value','')
+    cy.get('#email')
+    .type('weber13lucas@gmail.com')
+    .should('have.value','weber13lucas@gmail.com')
+    .clear()
+    .should('have.value','')
+    cy.get('#phone')
+    .type('123467899')
+    .should('have.value','123467899') 
+    .clear()
+    .should('have.value','')
+  
+  })
 })
 
 it('exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios',function() {
+  cy.clock()
   cy.contains('.button', 'Enviar').click()
   cy.get('.error').should('be.visible')
+  cy.tick(THREE_SECONDS_IN_MS)
+  cy.get('.error').should('not.be.visible')
+
 })
 
 it('envia o formuário com sucesso usando um comando customizado', function() {
-cy.fillManatoryFieldsAndSubmit()
+  cy.clock()
+  cy.fillManatoryFieldsAndSubmit()
 
-cy.get('.success').should('be.visible')
+  cy.get('.success').should('be.visible')
+  cy.tick(THREE_SECONDS_IN_MS)
+  cy.get('.success').should('not.be.visible')
+
 });
 
 it('seleciona um produto (YouTube) por seu texto',function(){ 
