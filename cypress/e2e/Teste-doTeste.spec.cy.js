@@ -207,11 +207,19 @@ it('exibe e esconde as mensagens de sucesso e erro usando o .invoke', () => {
     .invoke('hide')
     .should('not.be.visible')
 })
-it.only('`preenche a area de texto usando o comando invoke',function(){
+it('`preenche a area de texto usando o comando invoke',function(){
   const longText = Cypress._.repeat('0123456789',30)
   cy.get('#open-text-area')
   .invoke('val', longText)
   .should('have.value',longText)
 })
-
+it.only('faz uma requisição http',function(){
+  cy.request('novoapptest.tagplus.com.br/weber_gat/')
+    .should(function(response){
+      const {status, statusText,body} = response
+      expect(status).to.equal(200)
+      expect(statusText).to.equal('OK')
+      expect(body).to.include('003dc7a')
+    })
+})
 });
